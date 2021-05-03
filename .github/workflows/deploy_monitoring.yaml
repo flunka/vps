@@ -10,6 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - uses: cschleiden/replace-tokens@v1
+        with:
+          tokenPrefix: "#{"
+          tokenSuffix: "}#"
+          files: '["roles/promtail/files/config.yaml", "roles/prometheus/files/prometheus.yaml"]'
+        env:
+          promtail_username: ${{ secrets.promtail_username }}
+          promtail_key: ${{ secrets.promtail_key }}
+          prometheus_username: ${{ secrets.prometheus_username }}
+          prometheus_key: ${{ secrets.prometheus_key }}
       - uses: ./.github/actions/ansible
         env:
           SSH_PRIVATE: ${{ secrets.SSH_PRIVATE }}
