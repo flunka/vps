@@ -1,0 +1,23 @@
+---
+- name: Add repository
+  yum_repository:
+    name: docker-ce
+    description: Docker repo
+    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+    gpgkey: https://download.docker.com/linux/centos/gpg
+    state: present
+  become: yes
+- name: Install a packages for docker
+  yum:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+  become: yes
+- name: Ensure docker is running and enabled
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes

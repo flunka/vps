@@ -1,0 +1,7 @@
+all:
+  hosts:
+    vps790031.ovh.net:
+      ansible_port: 6666
+      ansible_user: ansible
+      ansible_ssh_private_key_file: ~/.ssh/ansible
+  children:

@@ -1,0 +1,30 @@
+---
+- name: Create a directory for Promtail config
+  file:
+    path: /etc/promtail
+    state: directory
+    group: "{{ansible_user}}"
+    mode: "0775"
+  become: yes
+- name: Copy Promtail config file
+  copy:
+    src: config.yaml
+    dest: /etc/promtail/config.yaml
+    mode: "0644"
+
+- name: Ensure docker-py is installed
+  pip:
+    name: docker-py
+    state: present
+  become: yes
+
+- name: Container present
+  docker_container:
+    name: promtail
+    state: started
+    container_default_behavior: compatibility
+    image: grafana/promtail:master
+    volumes:
+      - /etc/promtail:/etc/promtail
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/config.yaml

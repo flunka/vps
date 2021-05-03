@@ -1,0 +1,32 @@
+---
+- name: Create a directory for Prometheus config
+  file:
+    path: /etc/prometheus
+    state: directory
+    group: "{{ansible_user}}"
+    mode: "0775"
+  become: yes
+- name: Copy Prometheus config file
+  copy:
+    src: prometheus.yaml
+    dest: /etc/prometheus/prometheus.yaml
+    mode: "0644"
+  register: prom_config
+
+- name: Ensure docker-py is installed
+  pip:
+    name: docker-py
+    state: present
+  become: yes
+
+- name: Container present
+  docker_container:
+    name: prometheus
+    state: started
+    container_default_behavior: compatibility
+    restart: "{{prom_config.changed}}"
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - /etc/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
