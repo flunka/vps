@@ -26,4 +26,4 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SUDO_PASS: ${{ secrets.SUDO_PASS }}
           ANSIBLE_INVENTORY: inventory.yaml
-          ANSIBLE_PLAYBOOK: monitoring.yaml
+          ANSIBLE_PLAYBOOK: site.yaml

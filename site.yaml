@@ -1,3 +1,7 @@
 ---
 - hosts: vps790031.ovh.net
   roles:
+    - docker-install
+    - promtail
+    - cloudalchemy.node_exporter
+    - prometheus
