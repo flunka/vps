@@ -1,0 +1,19 @@
+name: Master build and deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ./.github/actions/ansible
+        env:
+          SSH_PRIVATE: ${{ secrets.SSH_PRIVATE }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SUDO_PASS: ${{ secrets.SUDO_PASS }}
+          ANSIBLE_INVENTORY: inventory.yaml
+          ANSIBLE_PLAYBOOK: monitoring.yaml
